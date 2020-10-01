@@ -21,6 +21,7 @@ setup(
     version="0.1",
     description='Investing.com API - Market and historical data downloader',
     long_description=long_description,
+    long_description_content_type="text/markdown",
     url='https://github.com/crapher/pyinvesting',
     author='Diego Degese',
     author_email='ddegese@gmail.com',
