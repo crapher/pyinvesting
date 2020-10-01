@@ -1,6 +1,10 @@
+
 # Investing.com® API - Market and historical data downloader
 
-pyinvesting is an API to download online and historical data from Investing.com.
+[![PyPI pyversions](https://img.shields.io/badge/python-3.6+-blue.svg?style=flat
+)](https://pypi.org/project/pyinvesting/0.1/) [![PyPI version shields.io](https://img.shields.io/pypi/v/pyinvesting.svg?maxAge=60)](https://pypi.org/project/pyinvesting/0.1/) [![PyPI status](https://img.shields.io/pypi/status/pyinvesting.svg?maxAge=60)](https://pypi.org/project/pyinvesting/0.1/) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) ![Tweeting](https://img.shields.io/twitter/follow/diegodegese.svg?style=social&label=Follow&maxAge=60) [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/ddegese)
+
+pyinvesting is an API to download online and historical data from investing.com.
 
 -----
 ## Quick Start
