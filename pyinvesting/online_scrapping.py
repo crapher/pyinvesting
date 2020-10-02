@@ -140,5 +140,7 @@ class OnlineScrapping:
 
         result = pd.DataFrame(data, index=[0])
         result.columns = ['pair_id', 'bid', 'ask', 'last', 'high', 'low', 'change', 'turnover', 'previous_close', 'timestamp']
+        result['date'] = pd.to_datetime(result['timestamp'], unit='s')
+        result = result[['pair_id', 'bid', 'ask', 'last', 'high', 'low', 'change', 'turnover', 'previous_close', 'date']]
+        
         return result
-

@@ -216,7 +216,9 @@ class OnlineWebsocket:
         quotes_df.columns = cols        
         quotes_df[cols] = quotes_df[cols].apply(pd.to_numeric) 
         quotes_df['previous_close'] = quotes_df['last'] - quotes_df['previous_close']
-        
+        quotes_df['date'] = pd.to_datetime(quotes_df['timestamp'], unit='s')
+        quotes_df = quotes_df[['pair_id', 'bid', 'ask', 'last', 'high', 'low', 'change', 'turnover', 'previous_close', 'date']]
+              
         return quotes_df
 
 #############################

@@ -7,6 +7,7 @@
 """Investing.com API - Market and historical data downloader"""
 
 from setuptools import setup, find_packages
+from pyinvesting import __version__
 import io
 from os import path
 
@@ -18,7 +19,7 @@ with io.open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='pyinvesting',
-    version="0.1",
+    version=__version__,
     description='Investing.com API - Market and historical data downloader',
     long_description=long_description,
     long_description_content_type="text/markdown",
