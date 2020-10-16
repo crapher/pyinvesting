@@ -22,8 +22,6 @@ from . import __user_agent__
 from .online_scrapping import OnlineScrapping
 from .online_websocket import OnlineWebsocket
 
-import threading
-
 class Online:
     
     def __init__(self, on_open=None, on_quotes=None, on_heartbeat=None, 
@@ -64,7 +62,7 @@ class Online:
                 
         self._pid_map = {}
         
-        self._scrapping = OnlineScrapping(proxy_url = proxy_url)
+        self._scrapping = OnlineScrapping(proxy_url=proxy_url)
         self._websocket = OnlineWebsocket(
             on_open = self._internal_on_open, 
             on_quotes = self._internal_on_quotes,
@@ -94,7 +92,7 @@ class Online:
 #########################
 #### PRIVATE METHODS ####
 #########################
-    def subscribe(self, pair_id, ticker = None, link=None):
+    def subscribe(self, pair_id, ticker=None, link=None):
         """
         Subscribe to an asset to receive its quote information.
         

@@ -27,7 +27,7 @@ import json
 
 class Search():
     
-    def __init__(self, proxy_url = None):
+    def __init__(self, proxy_url=None):
         """
         Class constructor 
         
@@ -51,7 +51,7 @@ class Search():
 ########################
 #### PUBLIC METHODS ####
 ########################
-    def tickers(self, search_term, limit = 30):
+    def tickers(self, search_term, limit=30):
         """
         Returns all the tickers found under the search_term.
         
@@ -72,7 +72,7 @@ class Search():
 
         return pd.DataFrame()
 
-    def news(self, search_term, limit = 30):
+    def news(self, search_term, limit=30):
         """
         Returns all the news found under the search_term.
         
@@ -94,7 +94,7 @@ class Search():
 
         return pd.DataFrame()
 
-    def articles(self, search_term, limit = 30):
+    def articles(self, search_term, limit=30):
         """
         Returns all the articles found under the search_term.
         
