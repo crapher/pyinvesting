@@ -81,18 +81,27 @@ class Online:
 #### PUBLIC METHODS ####
 ########################
     def connect(self):
+        """
+        Connects to websocket to receive quotes information.
+        """
         
-        stream_server = self._scrapping.get_stream_server()
-        self._websocket.connect(stream_server)
+        try:
+            stream_server = self._scrapping.get_stream_server()
+            self._websocket.connect(stream_server)
+        except Exception as ex:
+            self._internal_on_error(ex)
 
     def disconnect(self):
+        """
+        Disconnects from websocket to stop receiving quotes information.
+        """
         
-        self._websocket.disconnect()
+        try:
+            self._websocket.disconnect()
+        except Exception as ex:
+            self._internal_on_error(ex)
 
-#########################
-#### PRIVATE METHODS ####
-#########################
-    def subscribe(self, pair_id, ticker=None, link=None):
+    def subscribe(self, pair_id, symbol=None, link=None):
         """
         Subscribe to an asset to receive its quote information.
         
@@ -100,15 +109,15 @@ class Online:
         ----------
         pair_id : int
             The pair_id that identify the asset to be retrieved.
-        ticker : str, option
-            The name of the ticker to be retrieved.
-            If it is not specified, the ticker is the dataframe will be the pair_id
+        symbol : str, option
+            The name of the symbol to be retrieved.
+            If it is not specified, the symbol is the dataframe will be the pair_id
         link : str, optional
             The link received in the search ticket query. 
             If it is specified, it will be used to get the data, previous to subscribe it to the websocket connection.
         """
         
-        self._pid_map[pair_id] = ticker if ticker else pair_id
+        self._pid_map[pair_id] = symbol if symbol else pair_id
 
         if link:
             try:
@@ -131,7 +140,7 @@ class Online:
                 
         if self._on_quotes:
             column = quotes['pair_id'].apply(lambda x: self._pid_map[x] if x in self._pid_map else x)
-            quotes.insert(0, 'ticker', column)
+            quotes.insert(0, 'symbol', column)
             quotes.set_index('pair_id', inplace=True)
             self._on_quotes(self, quotes)
 

@@ -56,7 +56,7 @@ class History:
         Parameters
         ----------
         pair_id : int
-            The pair_id value received in the search ticker query.
+            The pair_id value received in the search symbol query.
         interval : int
             The interval represented by each bar. 
             Valid values (all numeric values are seconds): 60, 300, 900, 1800, 3600, 18000, 86400, week, month
@@ -92,11 +92,11 @@ class History:
         try:
             data = self._get_page_content(url)
         
-            cols = ['date','open','high','low','close','volume','unknown']
+            cols = ['datetime','open','high','low','close','volume','unknown']
             df = pd.DataFrame(data['candles'], columns = cols)
             df.drop(['unknown'], inplace=True, axis=1)
         
-            df.date = pd.to_datetime(df.date / 1000, unit='s')
+            df.datetime = pd.to_datetime(df.datetime / 1000, unit='s')
         except:
             df = pd.DataFrame()
             
@@ -109,7 +109,7 @@ class History:
         Parameters
         ----------
         pair_id : int
-            The pair_id value received in the search ticker query.
+            The pair_id value received in the search symbol query.
         timeframe : str
             The interval represented by each bar. 
             Valid values: 1M, 5M, 15M, 30M, 60M, 5H, 1D, 1W, 1N
@@ -131,6 +131,7 @@ class History:
             df = pd.DataFrame(data['data'])
             df.date = pd.to_datetime(df.date)
             df = df[['date','open','high','low','close','volume']]
+            df.columns = ['datetime','open','high','low','close','volume']
         except:
             df = pd.DataFrame()
             

@@ -11,10 +11,10 @@ pyinvesting is an API to download online and historical data from investing.com.
 
 ### Search Module
 
-The search module is used to search all the information related to a specific ticker.
+The search module is used to search all the information related to a specific symbol.
 
 The information that can be retrieved is:
-- Tickers: It will be used by the rest of the modules to get online or historical data
+- Symbols: It will be used by the rest of the modules to get online or historical data
 - News: They are all the news related to a specific search.
 - Articles: They are all the articles related to a specific search.
 

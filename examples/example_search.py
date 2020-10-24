@@ -23,8 +23,8 @@ import pyinvesting as ic
 
 search = ic.Search()
 
-tickers = search.tickers('BTC', 5)
-print(tickers)
+symbols = search.symbols('BTC', 5)
+print(symbols)
 
 news = search.news('TSLA', 5)
 print(news)

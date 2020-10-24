@@ -35,16 +35,16 @@ def on_open(online):
     print('Connection Opened')
 
     print('Subscribing to US 30 Contract (With first reading)')
-    online.subscribe(pair_id = 8873, ticker = 'US 30 Contract', link = '/indices/us-30-futures')
+    online.subscribe(pair_id = 8873, symbol = 'US 30 Contract', link = '/indices/us-30-futures')
 
     print('Subscribing to US 500 Contract (With first reading)')
-    online.subscribe(pair_id = 8839, ticker = 'US 500 Contract', link = '/indices/us-spx-500-futures')
+    online.subscribe(pair_id = 8839, symbol = 'US 500 Contract', link = '/indices/us-spx-500-futures')
 
     print('Subscribing to US Tech 100 (Without first reading)')
-    online.subscribe(pair_id = 8874, ticker = 'US Tech 100')
+    online.subscribe(pair_id = 8874, symbol = 'US Tech 100')
 
     print('Subscribing to Small Cap 2000 (Without first reading)')
-    online.subscribe(pair_id = 8864, ticker = 'Small Cap 2000')
+    online.subscribe(pair_id = 8864, symbol = 'Small Cap 2000')
     
 def on_quotes(online, data):
     print(data)
