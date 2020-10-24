@@ -51,24 +51,24 @@ class Search():
 ########################
 #### PUBLIC METHODS ####
 ########################
-    def symbols(self, search_term, limit=30):
+    def tickers(self, search_term, limit=30):
         """
-        Returns all the symbols found under the search_term.
+        Returns all the tickers found under the search_term.
         
         Parameters
         ----------
         search_term : str
-            Term used to filter the symbols
+            Term used to filter the tickers
         limit : int
             Maximum results count that will be retrieved
         """
                 
-        symbols = self._internal_search(search_term.lower(), 'quotes', limit)
-        if not symbols.empty:
-            symbols.link = symbols.link.apply(lambda x: 'https://www.investing.com{}'.format(x) if x != None and x[0] == '/' else x)
-            symbols = symbols[['pairId', 'link', 'symbol', 'exchange', 'name', 'type']]
-            symbols.columns = ['pair_id', 'link', 'symbol', 'exchange', 'name', 'type']
-            return symbols
+        tickers = self._internal_search(search_term.lower(), 'quotes', limit)
+        if not tickers.empty:
+            tickers.link = tickers.link.apply(lambda x: 'https://www.investing.com{}'.format(x) if x != None and x[0] == '/' else x)
+            tickers = tickers[['pairId', 'link', 'symbol', 'exchange', 'name', 'type']]
+            tickers.columns = ['pair_id', 'link', 'symbol', 'exchange', 'name', 'type']
+            return tickers
 
         return pd.DataFrame()
 

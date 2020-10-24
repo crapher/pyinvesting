@@ -77,9 +77,9 @@ class OnlineScrapping:
         Parameters
         ----------
         pair_id : int
-            The pair_id value received in the search symbol query.
+            The pair_id value received in the search ticker query.
         link : str
-            The link value received in the search symbol query.        
+            The link value received in the search ticker query.        
         """
         
         content = self._get_page_content(link)
@@ -140,7 +140,7 @@ class OnlineScrapping:
 
         result = pd.DataFrame(data, index=[0])
         result.columns = ['pair_id', 'bid', 'ask', 'last', 'high', 'low', 'change', 'turnover', 'previous_close', 'timestamp']
-        result['datetime'] = pd.to_datetime(result['timestamp'], unit='s')
-        result = result[['pair_id', 'bid', 'ask', 'last', 'high', 'low', 'change', 'turnover', 'previous_close', 'datetime']]
+        result['date'] = pd.to_datetime(result['timestamp'], unit='s')
+        result = result[['pair_id', 'bid', 'ask', 'last', 'high', 'low', 'change', 'turnover', 'previous_close', 'date']]
         
         return result
