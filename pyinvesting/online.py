@@ -80,18 +80,27 @@ class Online:
 ########################
 #### PUBLIC METHODS ####
 ########################
-    def connect(self):
+    def connect(self):       
+        """
+        Connects to websocket to receive quotes information.
+        """
         
-        stream_server = self._scrapping.get_stream_server()
-        self._websocket.connect(stream_server)
-
+        try:
+            stream_server = self._scrapping.get_stream_server()
+            self._websocket.connect(stream_server)
+        except Exception as ex:
+            self._internal_on_error(ex)
+        
     def disconnect(self):
+        """
+        Disconnects from websocket to stop receiving quotes information.
+        """
         
-        self._websocket.disconnect()
+        try:
+            self._websocket.disconnect()
+        except Exception as ex:
+            self._internal_on_error(ex)
 
-#########################
-#### PRIVATE METHODS ####
-#########################
     def subscribe(self, pair_id, ticker=None, link=None):
         """
         Subscribe to an asset to receive its quote information.

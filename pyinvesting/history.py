@@ -92,11 +92,11 @@ class History:
         try:
             data = self._get_page_content(url)
         
-            cols = ['date','open','high','low','close','volume','unknown']
+            cols = ['datetime','open','high','low','close','volume','unknown']
             df = pd.DataFrame(data['candles'], columns = cols)
             df.drop(['unknown'], inplace=True, axis=1)
         
-            df.date = pd.to_datetime(df.date / 1000, unit='s')
+            df.datetime = pd.to_datetime(df.datetime / 1000, unit='s')
         except:
             df = pd.DataFrame()
             
@@ -122,15 +122,15 @@ class History:
             'strFieldsMode': 'allFields',
             'strExtraData': 'lang_ID=1',
             'strTimeFrame': timeframe
-        }        
+        }
     
         url = 'https://advcharts.investing.com/advinion2016/advanced-charts/1/1/8/GetRecentHistory?{}'.format(self._get_dict_to_query_string(payload))
 
         try:
             data = self._get_page_content(url)
             df = pd.DataFrame(data['data'])
-            df.date = pd.to_datetime(df.date)
-            df = df[['date','open','high','low','close','volume']]
+            df['datetime'] = pd.to_datetime(df.date)
+            df = df[['datetime','open','high','low','close','volume']]
         except:
             df = pd.DataFrame()
             

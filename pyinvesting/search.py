@@ -89,7 +89,7 @@ class Search():
             news.link = news.link.apply(lambda x: 'https://www.investing.com{}'.format(x) if x != None and x[0] == '/' else x)
             news.dateTimestamp = pd.to_datetime(news.dateTimestamp, unit='s')
             news = news[['dateTimestamp', 'name', 'link', 'providerName']]
-            news.columns = ['date', 'name', 'link', 'provider']
+            news.columns = ['datetime', 'name', 'link', 'provider']
             return news
 
         return pd.DataFrame()
@@ -111,7 +111,7 @@ class Search():
             articles.link = articles.link.apply(lambda x: 'https://www.investing.com{}'.format(x) if x != None and x[0] == '/' else x)
             articles.dateTimestamp = pd.to_datetime(articles.dateTimestamp, unit='s')
             articles = articles[['dateTimestamp', 'name', 'link', 'authorName', 'isEditorPick']]
-            articles.columns = ['date', 'name', 'link', 'author', 'is_editor_pick']
+            articles.columns = ['datetime', 'name', 'link', 'author', 'is_editor_pick']
             return articles
             
         return pd.DataFrame()
