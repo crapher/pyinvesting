@@ -72,9 +72,12 @@ class OnlineWebsocket:
         self._on_close = on_close
         
         self._ws = None
+        self._ws_keep_alive_thread = None
+        self._ws_keep_alive_thread_event = None
+
         self._connection_thread = None        
         self._connection_lock = Lock()
-
+        
         global _rtws_instance
         _rtws_instance = self
         
@@ -240,8 +243,9 @@ class OnlineWebsocket:
 
         self = _rtws_instance
         
-        self._ws_keep_alive_thread_event.set()
-        self._ws_keep_alive_thread.join()
+        if self._ws_keep_alive_thread_event:
+            self._ws_keep_alive_thread_event.set()
+            self._ws_keep_alive_thread.join()
         
         if self._on_close:
             self._on_close()
