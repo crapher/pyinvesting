@@ -94,9 +94,12 @@ class OnlineWebsocket:
             The server id used by the websocket.
         """
         
+        if stream_server is None:
+            raise Exception("Stream Server is None")
+            
         with self._connection_lock:
             if not self._ws:
-                url = 'wss://stream{}.forexpros.com/echo/{}/{}/websocket'.format(
+                url = 'wss://{}/echo/{}/{}/websocket'.format(
                     stream_server, 
                     random.randrange(0, 1000), 
                     ''.join(random.choice('abcdefghijklmnopqrstuvwxyz0123456789') for _ in range(8)))

@@ -29,6 +29,7 @@ import numpy as np
 
 import threading
 import time
+import json
 
 class OnlineScrapping:
     
@@ -62,11 +63,12 @@ class OnlineScrapping:
     def get_stream_server(self):
         """
         Returns a stream server to be used for the websocket to retrive quotes.        
-        """        
+        """
         with self._stream_server_lock:
             if not self._stream_server:
-                content = self._get_page_content('https://www.investing.com/indices/us-30')
-                self._stream_server = self._get_stream_server_from_page(content)
+                content = self._get_page_content('https://api.investing.com/api/editions/streamer')
+                servers = json.loads(content)
+                self._stream_server = servers['stream_servers'][0]
                     
         return self._stream_server
             
@@ -108,11 +110,6 @@ class OnlineScrapping:
         
         return response.text
 
-    def _get_stream_server_from_page(self, text):
-        
-        result = re.search('//stream(\d+).forexpros', text)
-        return result.group(1) if result else None
-            
     def _get_quotes_from_page(self, text, pair_id):
         
         data = {'pair_id': pair_id, 'bid': np.NAN, 'ask': np.NAN, 'last': np.NAN, 'high': np.NAN, 'low': np.NAN, 'pcp': np.NAN, 'turnover': np.NAN, 'pc': np.NAN, 'timestamp': int(time.time())}        
