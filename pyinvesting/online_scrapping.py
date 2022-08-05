@@ -114,26 +114,15 @@ class OnlineScrapping:
         
         data = {'pair_id': pair_id, 'bid': np.NAN, 'ask': np.NAN, 'last': np.NAN, 'high': np.NAN, 'low': np.NAN, 'pcp': np.NAN, 'turnover': np.NAN, 'pc': np.NAN, 'timestamp': int(time.time())}        
         keys = list(data)
+        doc = pq(text.encode("ascii", "ignore"))
         
-        doc = pq(text)
-        spans = doc("span[class*='{}']".format(pair_id))
-        for span in spans:
-            classes = span.attrib['class']
-            
-            for key in keys:
-                if '{}-{}'.format(pair_id, key) in classes:
-                    try:
-                        data[key] = float(span.text.replace(',','').replace('%','').strip())
-                        keys.remove(key)
-                    except:
-                        pass
-
-                    break
-        
-        if data['last'] and data['pc']:
-            data['pc'] = data['last'] - data['pc']
-        elif data['pc']: # There is no last value
-            data['pc'] = np.NAN
+        data['bid'] = self._get_number_or_nan(doc, "div[data-test='bid-value']", index=0)
+        data['ask'] = self._get_number_or_nan(doc, "div[data-test='bid-value']", index=1)
+        data['last'] = self._get_number_or_nan(doc, "span[data-test='instrument-price-last']")
+        data['low'] = self._get_number_or_nan(doc, "div[class*='trading-hours_value']", index=0)
+        data['high'] = self._get_number_or_nan(doc, "div[class*='trading-hours_value']", index=1)
+        data['pcp'] = self._get_number_or_nan(doc, "span[data-test='instrument-price-change-percent']")
+        data['pc'] = self._get_number_or_nan(doc, "dd[data-test='prevClose']")
 
         result = pd.DataFrame(data, index=[0])
         result.columns = ['pair_id', 'bid', 'ask', 'last', 'high', 'low', 'change', 'turnover', 'previous_close', 'timestamp']
@@ -141,3 +130,13 @@ class OnlineScrapping:
         result = result[['pair_id', 'bid', 'ask', 'last', 'high', 'low', 'change', 'turnover', 'previous_close', 'datetime']]
         
         return result
+
+    def _get_number_or_nan(self, doc, query, index=0):
+        
+        try:
+            value = doc(query).text()
+            value = value.replace(',', '')
+            value = re.findall(r"[-]?(?:\d*\.\d+|\d+)", value)[index]
+            return float(value)
+        except:
+            return np.NAN

@@ -77,10 +77,7 @@ class OnlineWebsocket:
 
         self._connection_thread = None        
         self._connection_lock = Lock()
-        
-        global _rtws_instance
-        _rtws_instance = self
-        
+
 ########################
 #### PUBLIC METHODS ####
 ########################
@@ -119,7 +116,7 @@ class OnlineWebsocket:
         Disconnects from websocket to stop receiving quotes information.
         """
         
-        with self._connection_lock:       
+        with self._connection_lock:
             if self._ws and self._ws.keep_running:
                 self._ws.close()
             
@@ -144,7 +141,7 @@ class OnlineWebsocket:
                 raise Exception("Connection is not open.")
             
             event = {'_event': 'subscribe', 'tzID': 8, 'message': 'pid-{}:'.format(pair_id)}
-            self._ws.send('\"{}\"'.format(json.dumps(event).replace('\"','\\\"')))
+            self._ws.send('[\"{}\"]'.format(json.dumps(event).replace('\"','\\\"')))
 
     def unsubscribe_event(self, pair_id):
         """
@@ -161,7 +158,7 @@ class OnlineWebsocket:
                 raise Exception("Connection is not open.")
 
             event = {'_event': 'unsubscribe', 'tzID': 8, 'message': 'pid-{}:'.format(pair_id)}
-            self._ws.send('\"{}\"'.format(json.dumps(event).replace('\"','\\\"')))
+            self._ws.send('[\"{}\"]'.format(json.dumps(event).replace('\"','\\\"')))
             
 #########################
 #### PRIVATE METHODS ####
@@ -199,7 +196,7 @@ class OnlineWebsocket:
         while not self._ws_keep_alive_thread_event.is_set():
             try:
                 event = {'_event': 'heartbeat', 'message': 'h'}
-                self._ws.send('\"{}\"'.format(json.dumps(event).replace('\"','\\\"')))
+                self._ws.send('[\"{}\"]'.format(json.dumps(event).replace('\"','\\\"')))
             except:
                 pass
             
@@ -230,9 +227,7 @@ class OnlineWebsocket:
 #############################
 #### WEBSOCKET CALLBACKS ####        
 #############################
-    def _internal_on_open(ws):
-        
-        self = _rtws_instance
+    def _internal_on_open(self, ws):
         
         self._ws_keep_alive_thread_event = Event()
         self._ws_keep_alive_thread = Thread(target=self._ws_keep_alive)
@@ -242,9 +237,7 @@ class OnlineWebsocket:
         if self._on_open:
             self._on_open()
 
-    def _internal_on_close(ws):
-
-        self = _rtws_instance
+    def _internal_on_close(self, ws, close_status_code, close_msg):
         
         if self._ws_keep_alive_thread_event:
             self._ws_keep_alive_thread_event.set()
@@ -253,16 +246,12 @@ class OnlineWebsocket:
         if self._on_close:
             self._on_close()
 
-    def _internal_on_error(ws, error):
-
-        self = _rtws_instance
+    def _internal_on_error(self, ws, error):
 
         if self._on_error:
             self._on_error(error)
 
-    def _internal_on_message(ws, message):
-
-        self = _rtws_instance
+    def _internal_on_message(self, ws, message):
         
         try:
             if message[0] == 'a':
