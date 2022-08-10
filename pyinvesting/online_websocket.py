@@ -78,6 +78,9 @@ class OnlineWebsocket:
         self._connection_thread = None        
         self._connection_lock = Lock()
 
+        global _instance
+        _instance = self
+        
 ########################
 #### PUBLIC METHODS ####
 ########################
@@ -100,13 +103,20 @@ class OnlineWebsocket:
                     stream_server, 
                     random.randrange(0, 1000), 
                     ''.join(random.choice('abcdefghijklmnopqrstuvwxyz0123456789') for _ in range(8)))
-                                
-                self._ws = websocket.WebSocketApp(url,
-                    on_open = self._internal_on_open,
-                    on_message = self._internal_on_message,
-                    on_error = self._internal_on_error,
-                    on_close = self._internal_on_close)
-             
+
+                if websocket.__version__ >= '1.0.0':
+                    self._ws = websocket.WebSocketApp(url,
+                        on_open = self._internal_on_open,
+                        on_message = self._internal_on_message,
+                        on_error = self._internal_on_error,
+                        on_close = self._internal_on_close)
+                else: # 0.57.0 - To keep compatibility with legacy version
+                    self._ws = websocket.WebSocketApp(url,
+                        on_open = lambda ws : _instance._internal_on_open(ws),
+                        on_message = lambda ws, message : _instance._internal_on_message(ws, message),
+                        on_error = lambda ws, error : _instance._internal_on_error(ws, error),
+                        on_close = lambda ws : _instance._internal_on_close(ws, -1, 'Unknown'))
+                        
                 self._connection_thread = Thread(target=self._ws_connect_async)
                 self._connection_thread.daemon = True
                 self._connection_thread.start()

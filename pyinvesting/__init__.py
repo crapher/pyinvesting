@@ -18,7 +18,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-__version__ = "0.30"
+__version__ = "0.31"
 __author__ = "Diego Degese"
 __user_agent__ = 'pyinvesting/{}'.format(__version__)
 

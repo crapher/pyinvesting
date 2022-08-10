@@ -39,7 +39,7 @@ The file **[example_history.py](https://github.com/crapher/pyinvesting/blob/mast
 * [Pandas](https://github.com/pydata/pandas) >= 1.0.0
 * [Numpy](http://www.numpy.org) >= 1.18.1
 * [Requests](http://docs.python-requests.org/en/master) >= 2.21.0
-* [Websocket-client](https://github.com/websocket-client/websocket-client) >= 1.0.0
+* [Websocket-client](https://github.com/websocket-client/websocket-client) >= 0.57.0
 * [PyQuery](https://pythonhosted.org/pyquery) >= 1.2
 
 ## Legal
